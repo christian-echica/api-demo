@@ -1,0 +1,19 @@
+php_flag display_errors on
+
+RewriteEngine On
+# Deliver the folder or file directly if it exists on the server
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# http://localhost/v1/tasks/2 (2 here is the task id) -> so you can put this in postman
+RewriteRule ^tasks/([0-9]+)$ controller/task.php?taskid=$1 [L]
+
+# http://localhost/v1/tasks/complete or incomplete -> so you can put this in postman
+RewriteRule ^tasks/complete$ controller/task.php?completed=Y [L]
+RewriteRule ^tasks/incomplete$ controller/task.php?completed=N [L]
+
+# http://localhost/v1/tasks  --> display all tasks
+RewriteRule    ^tasks$                   controller/task.php     [L]
+
+# http://localhost/v1/tasks/page/1 --> pagination
+RewriteRule    ^tasks/page/([0-9]+)$     controller/task.php?page=$1    [L]
